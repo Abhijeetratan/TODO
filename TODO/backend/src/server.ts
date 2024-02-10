@@ -1,29 +1,14 @@
-import "dotenv/config";
-import app from "./app"
+import app from "./app";
+import env from "./util/validateEnv";
 import mongoose from "mongoose";
 
-// Connect to MongoDB
-mongoose.connect(process.env.MONGO_CONNECTION_STRING!)
+const port = env.PORT;
+
+mongoose.connect(env.MONGO_CONNECTION_STRING)
     .then(() => {
-        console.log('Mongoose connectd');
+        console.log("Mongoose connected");
         app.listen(port, () => {
-            console.log("server is running" + port);
-        })
+            console.log("Server running on port: " + port);
+        });
     })
-
-// mongoose.connect(process.env.MONGO_CONNECTION_STRING!, {
-//     useNewUrlParser: true,
-//     useUnifiedTopology: true
-// } as any)
-//     .then(() => {
-//         console.log("Connected to MongoDB");
-//     })
-//     .catch((error) => {
-//         console.error("Error connecting to MongoDB:", error);
-//     });
-
-
-const port = process.env.PORT || 5000;
-
-
-
+    .catch(console.error);

@@ -1,23 +1,11 @@
-import mongoose, { Schema, Document } from 'mongoose';
+import { InferSchemaType, model, Schema } from "mongoose";
 
-export interface Note extends Document {
-    id: string;
-    title: string;
-    text: string;
-    content?: string;
-    createdAt: Date;
-    updatedAt: Date;
-}
-
-const noteSchema = new Schema<Note>({
-
+const noteSchema = new Schema({
+    userId: { type: Schema.Types.ObjectId, required: true },
     title: { type: String, required: true },
-    text: { type: String, required: true },
-    content: { type: String },
-}, {
-    timestamps: true, // Automatically add createdAt and updatedAt timestamps
-});
+    text: { type: String },
+}, { timestamps: true });
 
-const NoteModel = mongoose.model<Note>('Note', noteSchema);
+type Note = InferSchemaType<typeof noteSchema>;
 
-export default NoteModel;
+export default model<Note>("Note", noteSchema);
